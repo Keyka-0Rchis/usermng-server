@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import works.keyka.usermngserver.controller.model.InputedUserParam;
 import works.keyka.usermngserver.domain.UserData;
 import works.keyka.usermngserver.repository.LogWriter;
-import works.keyka.usermngserver.service.AddUserService;
 import works.keyka.usermngserver.service.ServiceResult;
 
 
@@ -34,7 +33,8 @@ public class UserController {
 		
 		UserData newUserData = new UserData(addUserName,addUserEmail,true);
 		
-		ServiceResult result = new AddUserService(newUserData).addUserExecute(getServletContext());
+	    // SpringらしくServiceをDIする
+	    ServiceResult result = addUserService.addUserExecute(newUserData);
 		LogWriter.logWrite(result,getServletContext());
 		//request.setAttribute("resultMessage", result.getResultMessage());
 		//うん？ここからどう送ればいいんだ？
