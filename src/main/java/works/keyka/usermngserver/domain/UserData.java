@@ -2,29 +2,59 @@ package works.keyka.usermngserver.domain;
 
 public class UserData {
 	
+	private Integer userId;
 	private String userName;
 	private String eMail;
-	private boolean exist;
+	private String password;
+	private boolean deleteFlag;
 	
-	public UserData(String userName,String eMail,boolean exist) {
-		this.userName = userName;
-		this.eMail = eMail;
-		this.exist = exist;
+	public UserData(Integer userId,String userName,String eMail,String password,boolean deleteFlag) {
+		this.setUserId(userId);
+		this.setUserName(userName);
+		this.seteMail(eMail);
+		this.setPassword(password);
+		this.setDeleteFlag(deleteFlag);
 	}
 	
-	public String getName() {
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
 		return userName;
 	}
-	
-	public String getEmail() {
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String geteMail() {
 		return eMail;
 	}
-	
-	public boolean isExist() {
-		return exist;
+
+	public void seteMail(String eMail) {
+		this.eMail = eMail;
 	}
-	
-	public void setExist(boolean existFlag) {
-		exist = existFlag;
+
+	public String getPassword() {
+		return password;
 	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public boolean isDeleteFlag() {
+		return deleteFlag;
+	}
+
+	public void setDeleteFlag(boolean deleteFlag) {
+		this.deleteFlag = deleteFlag;
+	}
+
+
 }
