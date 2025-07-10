@@ -55,11 +55,11 @@ public class UserData {
 		this.userName = userName;
 	}
 
-	public String geteMail() {
+	public String getEmail() {
 		return email;
 	}
 
-	public void seteMail(String eMail) {
+	public void setEmail(String eMail) {
 		this.email = eMail;
 	}
 
