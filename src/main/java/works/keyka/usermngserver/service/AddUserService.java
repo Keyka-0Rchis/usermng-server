@@ -30,7 +30,7 @@ public class AddUserService {
 //			//insertするデータの作成　
 //			//IDはAutoIncrementするのでnull。削除フラグは当然false
 //			UserData userData = new UserData(null,addName,addEmail,addPassword,false);
-			//引数がご茶つくので、controllerへ移管
+			//引数がごちゃつくので、controllerへ移管
 			
 			//insert intoしてもらう。
 			userRepository.insert(userData);
