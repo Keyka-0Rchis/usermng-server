@@ -1,26 +1,19 @@
 package works.keyka.usermngserver.service;
 
-import java.util.TreeMap;
-
-import works.keyka.usermngserver.domain.UserData;
-
+import works.keyka.usermngserver.common.ErrorCode;
 
 public class ServiceResult {
 
-	private final String selectedMode;
-	private final int targetedId;
-	private final String targetedName;
+	private final String operation;
 	private final boolean success;
 	private final String message;
-	private final TreeMap<Integer, UserData> userMap;
+	private final ErrorCode errorCode;
 	
-	public ServiceResult(String selectedMode,int targetedId,String targetedName,boolean success,String message,TreeMap<Integer, UserData> userMap) {
-		this.selectedMode =selectedMode;
-		this.targetedId = targetedId;
-		this.targetedName = targetedName;
+	public ServiceResult(String operation,boolean success,String message,ErrorCode errorCode) {
+		this.operation =operation;
 		this.success = success;
 		this.message =  message;
-		this.userMap = userMap;
+		this.errorCode = errorCode;
 	}
 	
 	//エラーコード
@@ -28,15 +21,7 @@ public class ServiceResult {
 	//（ユーザーリスト）
 	
 	public String getSelectedMode() {
-		return selectedMode;
-	}
-	
-	public int getTargetedId() {
-		return targetedId;
-	}
-	
-	public String getTargetedName() {
-		return targetedName;
+		return operation;
 	}
 	
 	public boolean isResultSuccess() {
@@ -46,9 +31,10 @@ public class ServiceResult {
 	public String getResultMessage() {
 		return message;
 	}
-	
-	public TreeMap<Integer, UserData> getResultMap() {
-		return userMap;
+
+	public ErrorCode getErrorCode() {
+		return errorCode;
 	}
+	
 	
 }

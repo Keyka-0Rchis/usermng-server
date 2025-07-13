@@ -2,40 +2,58 @@ package works.keyka.usermngserver.service;
 
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+import works.keyka.usermngserver.common.ErrorCode;
 import works.keyka.usermngserver.domain.UserData;
+import works.keyka.usermngserver.repository.UserRepository;
 
 
 @Service
+@RequiredArgsConstructor	//勝手にコンストラクタだと！？
 public class AddUserService {
 
-	private String addName;
-	private String addEmail;
-	private String addPassword;
+	//フィールドを用意すると勝手にインスタンス化される。
+	private final UserRepository userRepository;
 	
-	
-	public AddUserService(String addName,String addEmail,String addPassword) {
-		this.addName = addName;
-		this.addEmail = addEmail;
-		this.addPassword = addPassword;
-	}
-	
-	public ServiceResult addUserExecute(String addName,String addEmail,String addPassword) {
+	public ServiceResult addUserExecute(UserData userData) {
+		//メールアドレスの重複チェック
+		if (userRepository.isExistEmail(userData.getEmail())) {
+			return new ServiceResult(
+					"add" ,
+					false,
+					"既に登録されているメールアドレスです",
+					ErrorCode.DUPLICATE_EMAIL
+					);
+		}
+		
 		try {
-			//insertするデータの作成　
-			//IDはAutoIncrementするのでnull。削除フラグは当然false
-			UserData userData = new UserData(null,addName,addEmail,addPassword,false);
-			//insert intoしてもらう。
-			UserRepository.insert(userData);
+//			//insertするデータの作成　
+//			//IDはAutoIncrementするのでnull。削除フラグは当然false
+//			UserData userData = new UserData(null,addName,addEmail,addPassword,false);
+			//引数がご茶つくので、controllerへ移管
 			
-//			UserMap userMap = UserFileManager.loadMap(context);
-//			int newId = IdGenerator.generateNextID(userMap.getGeneratedIdSet());
-//			UserData newUserData = this.userData;
-//			userMap.addUser(newId,newUserData);
-//			TreeMap <Integer, UserData> resultMap = userMap.getInternalMap();
-//			UserFileManager.saveMap(resultMap,context);
-//			return new ServiceResult("add" , newId , newUserData.getName() , true , "ユーザーID:"+newId+" ,ユーザー名:"+newUserData.getName()+"を登録しました。",resultMap);
+			//insert intoしてもらう。
+			userRepository.insert(userData);
+			
+			return new ServiceResult("add",
+					true,
+					"ユーザーを追加しました"
+					,null
+					);
+		}catch(IllegalArgumentException e){
+			return new ServiceResult(
+					"add" ,
+					false,
+					"入力値が不正です。"+ e.getMessage(),
+					ErrorCode.VALIDATION_ERROR
+					);
 		}catch(Exception e) {
-			return new ServiceResult("add" , 0 , "---" , false, "ユーザーの追加に失敗しました。"+ e.getMessage(),null);
+			return new ServiceResult(
+					"add" ,
+					false,
+					"予期しないエラーが発生しました。"+ e.getMessage(),
+					ErrorCode.UNKNOWN_ERROR
+					);
 		}
 	}
 }

@@ -34,7 +34,7 @@ public class UserData {
 		
 		this.setUserId(userId);
 		this.setUserName(userName);
-		this.seteMail(email);
+		this.setEmail(email);
 		this.setPassword(password);
 		this.setDeleteFlag(deleteFlag);
 	}

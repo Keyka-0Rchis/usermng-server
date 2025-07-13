@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import works.keyka.usermngserver.controller.model.InputedUserParam;
 import works.keyka.usermngserver.domain.UserData;
-import works.keyka.usermngserver.repository.LogWriter;
+import works.keyka.usermngserver.service.AddUserService;
 import works.keyka.usermngserver.service.ServiceResult;
 
 
@@ -19,6 +19,8 @@ import works.keyka.usermngserver.service.ServiceResult;
 @RequestMapping("/UserController")
 public class UserController {
 	
+	private AddUserService addUserService;
+
 	@GetMapping("/sayTom")
 	public String getUser() {
 		return "tom";
@@ -28,16 +30,14 @@ public class UserController {
 	public String addUser(@RequestBody InputedUserParam body){
 		final String addUserName = body.getName();
 		final String addUserEmail = body.getEmail();
+		final String addUserPassword = body.getPassword();
 		
 		System.out.println(addUserName);
 		
-		UserData newUserData = new UserData(addUserName,addUserEmail,true);
+		UserData newUserData = new UserData(null,addUserName,addUserEmail,addUserPassword, true);
 		
 	    // SpringらしくServiceをDIする
 	    ServiceResult result = addUserService.addUserExecute(newUserData);
-		LogWriter.logWrite(result,getServletContext());
-		//request.setAttribute("resultMessage", result.getResultMessage());
-		//うん？ここからどう送ればいいんだ？
 		
 	    // メッセージをJSON形式で返す
 	    String jsonResponse = "{\"message\": \"" + result.getResultMessage() + "\"}";
