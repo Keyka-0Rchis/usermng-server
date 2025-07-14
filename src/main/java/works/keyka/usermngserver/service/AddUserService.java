@@ -4,6 +4,9 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import works.keyka.usermngserver.common.ErrorCode;
+import works.keyka.usermngserver.common.exception.DuplicateEmailException;
+import works.keyka.usermngserver.common.exception.UnexpectedException;
+import works.keyka.usermngserver.common.exception.ValidationException;
 import works.keyka.usermngserver.domain.UserData;
 import works.keyka.usermngserver.repository.UserRepository;
 
@@ -18,12 +21,7 @@ public class AddUserService {
 	public ServiceResult addUserExecute(UserData userData) {
 		//メールアドレスの重複チェック
 		if (userRepository.isExistEmail(userData.getEmail())) {
-			return new ServiceResult(
-					"add" ,
-					false,
-					"既に登録されているメールアドレスです",
-					ErrorCode.DUPLICATE_EMAIL
-					);
+			throw new DuplicateEmailException ("メールアドレスが重複しています",ErrorCode.DUPLICATE_EMAIL,"add");
 		}
 		
 		try {
@@ -41,19 +39,9 @@ public class AddUserService {
 					,null
 					);
 		}catch(IllegalArgumentException e){
-			return new ServiceResult(
-					"add" ,
-					false,
-					"入力値が不正です。"+ e.getMessage(),
-					ErrorCode.VALIDATION_ERROR
-					);
+			throw new ValidationException("入力値が不正です。",ErrorCode.VALIDATION_ERROR,"add");
 		}catch(Exception e) {
-			return new ServiceResult(
-					"add" ,
-					false,
-					"予期しないエラーが発生しました。"+ e.getMessage(),
-					ErrorCode.UNKNOWN_ERROR
-					);
+			throw new UnexpectedException("予期せぬエラーが発生しました。",ErrorCode.UNKNOWN_ERROR,"add");
 		}
 	}
 }
